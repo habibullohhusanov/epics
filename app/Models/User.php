@@ -36,13 +36,5 @@ class User extends Authenticatable
     {
         return $this->morphMany(Image::class, "imageable");
     }
-    // public function favorites()
-    // {
-    //     return $this->belongsToMany(Image::class);
-    // }
-    // public function hasFavorites($id)
-    // {
-    //     return $this->favorites()->where('image_id', $id)->exists();
-    // }
 
 }
