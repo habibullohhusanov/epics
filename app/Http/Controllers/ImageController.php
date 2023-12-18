@@ -29,7 +29,7 @@ class ImageController extends Controller
         $response = Http::withHeaders([
             "accept" => "application/json",
             "content-type" => "application/json",
-            "authorization" => "Bearer key-3LAIz2LijWRCgubXlotx2BIqLM99ET5mtZhFP1QGI0wjI73rIoHkp4RJbwTCqpGd21W4j1lxpTfB86BIiJNPiiUCq6uIAsH5",
+            "authorization" => env("API_TOKEN"),
         ])->post("https://api.getimg.ai/v1/stable-diffusion/text-to-image", [
             "prompt" => $request->prompt,
             "width" => $request->width??512,

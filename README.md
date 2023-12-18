@@ -5,10 +5,11 @@
 
 install [xampp](https://www.apachefriends.org/ru/index.html).
 install [composer](https://getcomposer.org/Composer-Setup.exe).
-Create a base named "mvs".
+Create a base named "epics".
 
-**Creat .env file.**
+**Need to change**
   * .env.example will be changed to .env
+  * Write the Bearer token obtained from [getimg.ai](https://getimg.ai/) to "API_TOKEN".
 ___
 ### Enter the following in the terminal
 ```
@@ -26,6 +27,19 @@ php artisan db:seed
 ```
 php artisan storage:link
 ```
+#### Open new terminal
+```
+php artisan artisan serve
+```
+#### Open new terminal
 ```
 php artisan schedule:work
 ```
+#### Open new terminal
+```
+php artisan queue:work
+```
+
+
+## About [Epics.uz]("https://epics.uz")
+_Through this site you can change text to image._

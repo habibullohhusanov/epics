@@ -8,6 +8,4 @@ Route::get("/user", [AuthController::class, "user"]);
 Route::post("/login", [AuthController::class, "login"]);
 Route::get("/logout", [AuthController::class, "logout"]);
 Route::post("/register", [AuthController::class, "register"]);
-
-Route::post("username", [UserController::class,"username"]);
-Route::post("password", [UserController::class,"password"]);
+Route::post("/resend", [AuthController::class, "resend"]);

@@ -11,11 +11,12 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        User::create([
+        $user = User::create([
             "role_id" => 1,
             "name" => "admin",
             "email" => "admin@gmail.com",
             "password" => Hash::make("2407"),
         ]);
+        $user->markEmailAsVerified();
     }
 }
