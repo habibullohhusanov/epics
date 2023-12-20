@@ -55,17 +55,35 @@ class AuthController extends Controller
     public function verify(Request $request)
     {
         $user = User::where("id", $request->route('id'))->first();
-        if (
-            $request->route('id') == $user->getKey() &&
-            hash_equals((string) $request->route('hash'), sha1($user->getEmailForVerification()))
-        ) {
-            if ($user->hasVerifiedEmail()) {
-                return response()->json(['message' => 'Email man already verified.'], 200);
+        if ($user) {
+            if (
+                $request->route('id') == $user->getKey() &&
+                hash_equals((string) $request->route('hash'), sha1($user->getEmailForVerification()))
+            ) {
+                if ($user->hasVerifiedEmail()) {
+                    return view('verify.verify', [
+                        'user' => $user,
+                        'title' => 'Successfully',
+                        'message' => 'Email man already verified.'
+                    ]);
+                }
+                $user->markEmailAsVerified();
+                return view('verify.verify', [
+                    'user' => $user,
+                    'title' => 'Successfully',
+                    'message' => 'Email man verified successfully.'
+                ]);
             }
-            $user->markEmailAsVerified();
-            return response()->json(['message' => 'Email man verified successfully.'], 200);
+            return view('verify.verify', [
+                'user' => $user,
+                'title' => 'Eror',
+                'message' => 'Invalid verification link.'
+            ]);
         }
-        return response()->json(['message' => 'Invalid verification link.'], 403);
+        return view('verify.verify', [
+            'title' => 'Eror',
+            'message' => 'The verification link is out of date.'
+        ]);
     }
     public function resend(Request $request)
     {
@@ -74,7 +92,7 @@ class AuthController extends Controller
             SendVerification::dispatch($user);
             return $this->succes();
         }
-        return $this->error("Email not fount")
+        return $this->error("Email not fount");
     }
     public function logout()
     {
