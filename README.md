@@ -10,6 +10,7 @@ Create a base named "epics".
 **Need to change**
   * .env.example will be changed to .env
   * Write the Bearer token obtained from [getimg.ai](https://getimg.ai/) to "API_TOKEN".
+  * Write your email in the MAIL section
 ___
 ### Enter the following in the terminal
 ```

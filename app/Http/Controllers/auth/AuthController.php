@@ -5,6 +5,7 @@ namespace App\Http\Controllers\auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\ResendRequest;
 use App\Jobs\SendVerification;
 use App\Models\User;
 use App\Notifications\VerifyEmail;
@@ -15,7 +16,7 @@ class AuthController extends Controller
 {
     public function __construct()
     {
-        $this->middleware("auth:sanctum")->except(["register", "login", "verify"]);
+        $this->middleware("auth:sanctum")->only(["logout","user"]);
     }
     public function user()
     {
@@ -85,10 +86,13 @@ class AuthController extends Controller
             'message' => 'The verification link is out of date.'
         ]);
     }
-    public function resend(Request $request)
+    public function resend(ResendRequest $request)
     {
         $user = User::where("email", $request->email)->first();
         if ($user) {
+            if ($user->hasVerifiedEmail()) {
+                return $this->error('Email man already verified.');
+            }
             SendVerification::dispatch($user);
             return $this->succes();
         }
