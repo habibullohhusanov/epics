@@ -7,6 +7,7 @@ use Illuminate\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -35,6 +36,10 @@ class User extends Authenticatable implements MustVerifyEmailInterface
     public function role():BelongsTo
     {
         return $this->belongsTo(Role::class);
+    }
+    public function find():HasMany
+    {
+        return $this->hasMany(Role::class);
     }
     public function images():MorphMany
     {

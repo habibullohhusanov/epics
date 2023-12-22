@@ -6,6 +6,7 @@ use App\Http\Resources\ImageResource;
 use App\Models\Image;
 use App\Http\Requests\StoreImageRequest;
 use App\Http\Requests\UpdateImageRequest;
+use App\Jobs\AddFindText;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 
@@ -35,6 +36,7 @@ class ImageController extends Controller
             "width" => $request->width??512,
             "height" => $request->height??512,
         ]);
+        AddFindText::dispatch($request->prompt, auth()->user()->id);
         $result = json_decode($response);
         $imageBase64 = $result->image;
         $imageData = base64_decode($imageBase64);
