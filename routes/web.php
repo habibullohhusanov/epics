@@ -6,9 +6,10 @@ use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\auth\AuthController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return false;
+Route::get('secret', function () {
+    return view('secret/dash');
 });
+Route::redirect('/', 'secret');
 
 Route::resources([
     'user' => UserController::class,
