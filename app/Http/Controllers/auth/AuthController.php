@@ -4,103 +4,38 @@ namespace App\Http\Controllers\auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
-use App\Http\Requests\RegisterRequest;
-use App\Http\Requests\ResendRequest;
-use App\Jobs\SendVerification;
-use App\Models\User;
-use App\Notifications\VerifyEmail;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
     public function __construct()
     {
-        $this->middleware("auth:sanctum")->only(["logout","user"]);
+        $this->middleware("auth")->only(["logout"]);
     }
-    public function user()
+    public function login_view()
     {
-        return $this->response(auth()->user());
+        return view("auth.login");
     }
-    public function login(LoginRequest $request)
-    {
-        $user = User::where('email', $request->email)->first();
+    public function login(LoginRequest $request) {
+        if (Auth::attempt($request)) {
+            $request->session()->regenerate();
 
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            return response()->json([
-                "token" => null,
-            ]);
+            return redirect()->intended('/');
         }
 
-        return $this->response([
-            "token" => $user->createToken("email")->plainTextToken,
-        ]);
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ])->onlyInput('email');
     }
-    public function register(RegisterRequest $request)
-    {
-        $user = User::create([
-            "role_id" => 2,
-            "name" => $request->name,
-            "email" => $request->email,
-            "password" => Hash::make($request->password),
-        ]);
-        SendVerification::dispatch($user);
+    public function logout(Request $request) {
 
-        $token = $user->createToken('api-token')->plainTextToken;
+        Auth::logout();
 
-        return $this->succes([
-            'token' => $token,
-            'message' => 'You are registered! Confirm email.',
-        ]);
-    }
-    public function verify(Request $request)
-    {
-        $user = User::where("id", $request->route('id'))->first();
-        if ($user) {
-            if (
-                $request->route('id') == $user->getKey() &&
-                hash_equals((string) $request->route('hash'), sha1($user->getEmailForVerification()))
-            ) {
-                if ($user->hasVerifiedEmail()) {
-                    return view('verify.verify', [
-                        'user' => $user,
-                        'title' => 'Successfully',
-                        'message' => 'Email man already verified.'
-                    ]);
-                }
-                $user->markEmailAsVerified();
-                return view('verify.verify', [
-                    'user' => $user,
-                    'title' => 'Successfully',
-                    'message' => 'Email man verified successfully.'
-                ]);
-            }
-            return view('verify.verify', [
-                'user' => $user,
-                'title' => 'Eror',
-                'message' => 'Invalid verification link.'
-            ]);
-        }
-        return view('verify.verify', [
-            'title' => 'Eror',
-            'message' => 'The verification link is out of date.'
-        ]);
-    }
-    public function resend(ResendRequest $request)
-    {
-        $user = User::where("email", $request->email)->first();
-        if ($user) {
-            if ($user->hasVerifiedEmail()) {
-                return $this->error('Email man already verified.');
-            }
-            SendVerification::dispatch($user);
-            return $this->succes();
-        }
-        return $this->error("Email not fount");
-    }
-    public function logout()
-    {
-        auth()->user()->tokens()->delete();
-        return $this->succes();
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect('/');
     }
 }
