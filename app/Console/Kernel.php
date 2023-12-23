@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Models\Image;
+use App\Models\User;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Illuminate\Support\Facades\Storage;
@@ -20,6 +21,12 @@ class Kernel extends ConsoleKernel
             foreach ($images as $image) {
                 Storage::delete($image->path);
                 $image->delete();
+            }
+        })->everyMinute();
+        $schedule->call(function () {
+            $users = User::where("created_at", "<", now()->subDays(1))->where("email_verified_at", "")->get();
+            foreach ($users as $user) {
+                $user->delete();
             }
         })->everyMinute();
     }

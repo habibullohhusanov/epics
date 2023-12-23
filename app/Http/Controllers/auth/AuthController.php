@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\LoginRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,15 +12,20 @@ class AuthController extends Controller
     {
         $this->middleware("auth")->only(["logout"]);
     }
-    public function login_view()
+    public function login_blade()
     {
         return view("auth.login");
     }
-    public function login(LoginRequest $request) {
-        if (Auth::attempt($request)) {
+    public function login(Request $request) {
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
+
+        if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            return redirect()->intended('/');
+            return redirect()->intended('dashboard');
         }
 
         return back()->withErrors([
