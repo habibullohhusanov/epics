@@ -13,6 +13,7 @@ use Illuminate\Queue\SerializesModels;
 class AddFindText implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    
     public $text;
     public $id;
     /**

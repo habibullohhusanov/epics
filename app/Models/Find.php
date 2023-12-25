@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Find extends Model
 {
     use HasFactory;
+    
     protected $fillable = [
         "text", "user_id",
     ];
