@@ -10,7 +10,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::all()->paginate(20);
+        $users = User::all();
         return view('secret.users', [
             'users' => $users,
         ]);

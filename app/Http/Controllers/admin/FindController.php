@@ -10,7 +10,7 @@ class FindController extends Controller
 {
     public function index()
     {
-        $finds = Find::all()->paginate(35);
+        $finds = Find::all();
         return view('secret.finds', [
             'finds' => $finds,
         ]);
