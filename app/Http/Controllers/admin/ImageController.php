@@ -10,7 +10,7 @@ class ImageController extends Controller
 {
     public function index()
     {
-        $images = Image::paginate(20);
+        $images = Image::all();
         return view('secret.images', [
             'images' => $images
         ]);
