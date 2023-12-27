@@ -18,5 +18,7 @@ class UserSeeder extends Seeder
             "password" => Hash::make("2407"),
         ]);
         $user->markEmailAsVerified();
+
+        User::factory()->count(100)->create();
     }
 }
