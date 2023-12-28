@@ -19,7 +19,7 @@ class ImageController extends Controller
     }
     public function index()
     {
-        return ImageResource::collection(auth()->user()->images);
+        return ImageResource::collection(auth()->user()->images );
     }
     public function show(Image $image)
     {
@@ -38,6 +38,7 @@ class ImageController extends Controller
         ]);
         AddFindText::dispatch($request->prompt, auth()->user()->id);
         $result = json_decode($response);
+        // dd($result);
         $imageBase64 = $result->image;
         $imageData = base64_decode($imageBase64);
         $name = time() . ".png";

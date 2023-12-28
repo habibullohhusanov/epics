@@ -37,7 +37,7 @@ class User extends Authenticatable implements MustVerifyEmailInterface
     {
         return $this->belongsTo(Role::class);
     }
-    public function find():HasMany
+    public function finds():HasMany
     {
         return $this->hasMany(Role::class);
     }

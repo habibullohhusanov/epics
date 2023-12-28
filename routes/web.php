@@ -15,12 +15,13 @@ Route::redirect('/', 'secret')->middleware('auth');
 
 Route::get("login", [AuthController::class, "login_blade"]);
 Route::post("login", [AuthController::class, "login"])->name("login");
-Route::get("logout", [AuthController::class, "logout"]);
+Route::post("logout", [AuthController::class, "logout"])->name("logout");
 
 Route::resources([
     'users' => UserController::class,
     'images' => ImageController::class,
     'finds' => FindController::class,
 ]);
+Route::get("all_destroy", [FindController::class, "all_destroy"])->name("all_destroy");
 
 Route::get("/verify-email/{id}/{hash}", [AuthApiController::class, "verify"]);

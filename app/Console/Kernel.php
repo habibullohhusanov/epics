@@ -17,18 +17,18 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->everyMinute();
         $schedule->call(function () {
-            $images = Image::where("created_at", "<", now()->subDays(1))->get();
+            $images = Image::where("created_at", "<", now()->subDays(10))->get();
             foreach ($images as $image) {
                 Storage::delete($image->path);
                 $image->delete();
             }
-        })->everyMinute();
+        })->everyThreeHours();
         $schedule->call(function () {
-            $users = User::where("created_at", "<", now()->subDays(1))->where("email_verified_at", "")->get();
+            $users = User::where("created_at", "<", now()->subDays(5))->where("email_verified_at", "")->get();
             foreach ($users as $user) {
                 $user->delete();
             }
-        })->everyMinute();
+        })->everySixHours();
     }
 
     /**
