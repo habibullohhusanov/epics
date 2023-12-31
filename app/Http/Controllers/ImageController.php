@@ -38,7 +38,6 @@ class ImageController extends Controller
         ]);
         AddFindText::dispatch($request->prompt, auth()->user()->id);
         $result = json_decode($response);
-        // dd($result);
         $imageBase64 = $result->image;
         $imageData = base64_decode($imageBase64);
         $name = time() . ".png";

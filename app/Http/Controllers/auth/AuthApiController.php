@@ -27,17 +27,19 @@ class AuthApiController extends Controller
         $user = User::where('email', $request->email)->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
-            return response()->json([
-                "token" => null,
-            ]);
+            return $this->error('Account not found or password is incorrect.');
         }
 
-        return $this->response([
+        return $this->succes([
             "token" => $user->createToken("email")->plainTextToken,
         ]);
     }
-    public function register(RegisterRequest $request)
+    public function register(Request $request)
     {
+        $test = User::where('email', $request->email)->first();
+        if ($test) {
+            return $this->error('Registered from this email.');
+        }
         $user = User::create([
             "role_id" => 2,
             "name" => $request->name,

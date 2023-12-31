@@ -18,7 +18,7 @@ class Controller extends BaseController
     public function succes($data = null, string $message = null)
     {
         return response()->json([
-            "succes" => true,
+            "success" => true,
             "data"=> $data,
             "message"=> $message,
         ]);
@@ -26,7 +26,7 @@ class Controller extends BaseController
     public function error(string $message = null, $data = null)
     {
         return response()->json([
-            "succes" => false,
+            "success" => false,
             "message"=> $message,
             "data"=> $data,
         ]);
@@ -40,7 +40,7 @@ class Controller extends BaseController
     public static function suc($data = null, string $message = null)
     {
         return response()->json([
-            "succes" => true,
+            "success" => true,
             "data"=> $data,
             "message"=> $message,
         ]);
@@ -48,7 +48,7 @@ class Controller extends BaseController
     public static function er(string $message = null, $data = null)
     {
         return response()->json([
-            "succes" => false,
+            "success" => false,
             "message"=> $message,
             "data"=> $data,
         ]);
