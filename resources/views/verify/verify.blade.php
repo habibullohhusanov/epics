@@ -61,7 +61,7 @@
             <h1><i class="fa fa-check-circle" aria-hidden="true" style="color: #f1e35c;"></i>{{ $title }}</h1>
             <p>{{ $message }}<span style="color: #0011ff;">
                 @isset($user)
-                    {{ $user->email }}
+                    <a href="https://epics.uz/generate.html">{{ $user->email }}</a>
                 @endisset
             </span>. </p>
         </div>
